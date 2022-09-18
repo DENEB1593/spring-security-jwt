@@ -20,27 +20,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic().disable()
                 .csrf().disable()
-
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 시큐리티 세션관리 설정
                 .and()
                 .authorizeRequests()
-                .antMatchers("/sign-api/sign-in",
-                        "/sign-api/sign-up",
-                        "/sign-api/exception").permitAll()
-
-                .antMatchers(HttpMethod.GET, "/product/**").permitAll()
-                .antMatchers("**exception**").permitAll()
-                .anyRequest().hasRole("ADMIN")
+                    .antMatchers("/sign-api/sign-in", "/sign-api/sign-up", "/sign-api/exception").permitAll()
+                    .antMatchers(HttpMethod.GET, "/product/**").permitAll()
+                    .antMatchers("**exception**").permitAll()
+                    .anyRequest().hasRole("ADMIN")
                 .and()
-                .exceptionHandling().accessDeniedHandler(null)
+                    .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
                 .and()
-                .exceptionHandling().authenticationEntryPoint(null)
-                .and().addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+                    .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                .and()
+                    .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+                            UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**");
+        web.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**",
+                "/swagger-ui.html", "/webjars/**", "/swagger/**", "/sign-api/exception");
     }
 }

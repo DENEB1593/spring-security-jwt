@@ -1,19 +1,21 @@
-package org.deneb.jwt.product;
+package org.deneb.jwt.sign;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+// 예제 13.29
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ProductResponseDto {
+public class SignUpResultDto {
 
-    private Long number;
-    private String name;
-    private int price;
-    private int stock;
+    private boolean success;
+
+    private int code;
+
+    private String msg;
 
 }
