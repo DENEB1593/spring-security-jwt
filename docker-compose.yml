@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+  mariadb:
+    image: mariadb:10.6
+    ports:
+      - 3306:3306
+    volumes:
+      - ./db/mariadb:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=jwt-sample
+      - MYSQL_PASSWORD=jwt-sample
+      - MYSQL_USER=jwt-sample
+      - MYSQL_DATABASE=jwt-sample
